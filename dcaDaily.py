@@ -1,6 +1,6 @@
 """
-This script runs daily at 4PM CST. Tweets a real-time update of the DCA Experiment portfolio
-on the @JacbWright Twitter account. Requires credentials for Twitter API and GCP.
+This script runs daily at 4PM CST. It tweets a real-time update of The DCA Experiment portfolio 
+on the @JacbWright Twitter account. Requires credentials for Twitter API and GCP to function.
 
 Hosted: https://www.pythonanywhere.com/
 Google Sheet: https://docs.google.com/spreadsheets/d/1k_xaCGcDtKTTZ1B9cjeUWxv3PxN5jLC1jSWFybYcvhc/edit?usp=sharing
@@ -12,7 +12,8 @@ import tweepy
 import json
 
 # Retrieve the credentials for accessing GCP
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/spreadsheets", 
+         "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
 gcpCreds = ServiceAccountCredentials.from_json_keyfile_name("GCPCredentials.json", scope)
 client = gspread.authorize(gcpCreds)
 
@@ -28,7 +29,7 @@ api_key_secret = twitterCreds['api_key_secret']
 access_token = twitterCreds['access_token']
 access_token_secret = twitterCreds['access_token_secret']
 
-# Retrieve live BTC price, retrieve BTC portfolio, calculate gains
+# Retrieve live BTC price, retrieve BTC portfolio, calculate positions and gains
 btcCurrent = float(yf.get_live_price("btc-usd"))
 btcPurchase = float(dcaSheet.cell(10, 4).value[1:9])
 btcShares = float(dcaSheet.cell(10, 3).value[1:9])
@@ -39,7 +40,7 @@ btcTotal = "{:.2f}".format(btcTotalCalc)
 btcGain = "{:.2f}".format(btcGainCalc)
 btcPercent = "{:.2%}".format(btcPercentCalc)
 
-# Retrieve live ETH price, retrieve ETH portfolio, calculate gains
+# Retrieve live ETH price, retrieve ETH portfolio, calculate positions and gains gains
 ethCurrent = float(yf.get_live_price("eth-usd"))
 ethPurchase = float(dcaSheet.cell(11, 4).value[1:9])
 ethShares = float(dcaSheet.cell(11, 3).value[1:9])
@@ -50,7 +51,7 @@ ethTotal = "{:.2f}".format(ethTotalCalc)
 ethGain = "{:.2f}".format(ethGainCalc)
 ethPercent = "{:.2%}".format(ethPercentCalc)
 
-# Retrieve live ADA price, retrieve ADA portfolio, calculate gains
+# Retrieve live ADA price, retrieve ADA portfolio, calculate positions and gains gains
 adaCurrent = float(yf.get_live_price("ada-usd"))
 adaPurchase = float(dcaSheet.cell(12, 4).value[1:9])
 adaShares = float(dcaSheet.cell(12, 3).value[:9])
@@ -61,7 +62,7 @@ adaTotal = "{:.2f}".format(adaTotalCalc)
 adaGain = "{:.2f}".format(adaGainCalc)
 adaPercent = "{:.2%}".format(adaPercentCalc)
 
-# Retrieve live MATIC price, retrieve MATIC portfolio, calculate gains
+# Retrieve live MATIC price, retrieve MATIC portfolio, calculate positions and gains gains
 maticCurrent = float(yf.get_live_price("matic-usd"))
 maticPurchase = float(dcaSheet.cell(13, 4).value[1:9])
 maticShares = float(dcaSheet.cell(13, 3).value[:9])
@@ -72,7 +73,7 @@ maticTotal = "{:.2f}".format(maticTotalCalc)
 maticGain = "{:.2f}".format(maticGainCalc)
 maticPercent = "{:.2%}".format(maticPercentCalc)
 
-# Calculate total portfolio gains
+# Calculate total portfolio balance and gains
 totalTotalCalc = btcTotalCalc + ethTotalCalc + adaTotalCalc + maticTotalCalc
 totalGainCalc = btcGainCalc + ethGainCalc + adaGainCalc + maticGainCalc
 totalPercentCalc = totalGainCalc / (btcPurchase + ethPurchase + adaPurchase + maticPurchase)
